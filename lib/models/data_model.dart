@@ -19,11 +19,11 @@ class DataModel {
   factory DataModel.fromMap(Map<String, dynamic> map) {
     return DataModel(
         id: map['id'].toString(),
-        title: map['title'],
-        url: map['url'],
-        imageUrl: map['image_url'],
-        summary: map['summary'],
-        newsSite: map['news_site'],
-        publishedAt: map['published_at']);
+        title: map['strCategory'],
+        url: map['strCategoryThumb'],
+        imageUrl: map['strCategoryThumb'],
+        summary: map['strCategoryDescription'],
+        newsSite: map['strCategory'],
+        publishedAt: map['strCategory']);
   }
 }

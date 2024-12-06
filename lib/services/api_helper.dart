@@ -13,7 +13,43 @@ class ApiHelper {
 
       if (response.statusCode == 200) {
         Map<String, dynamic> body = json.decode(response.body);
-        List<dynamic> data = body['results'];
+        List<dynamic> data = body['categories'];
+        return data;
+      } else {
+        throw Exception('Gagal meng fetch $endpoint');
+      }
+    } catch (e) {
+      throw Exception('Error fetching: $e');
+    }
+  }
+
+  static Future<List<dynamic>> getMeals(String category) async {
+    String baseEnd = '/filter.php?c=';
+    String endpoint = baseEnd + category;
+    try {
+      final response = await http.get(Uri.parse(baseUrl + endpoint));
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> body = json.decode(response.body);
+        List<dynamic> data = body['meals'];
+        return data;
+      } else {
+        throw Exception('Gagal meng fetch $endpoint');
+      }
+    } catch (e) {
+      throw Exception('Error fetching: $e');
+    }
+  }
+
+  static Future<dynamic> getDetails(String id) async {
+    String baseEnd = '/lookup.php?i=';
+    String endpoint = baseEnd + id;
+    try {
+      final response = await http.get(Uri.parse(baseUrl + endpoint));
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> body = json.decode(response.body);
+        dynamic data = body['meals'];
         return data;
       } else {
         throw Exception('Gagal meng fetch $endpoint');

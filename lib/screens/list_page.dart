@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:responsi_124220018/screens/list_page.dart';
-import 'package:responsi_124220018/screens/login_page.dart';
+import 'package:responsi_124220018/screens/detail_page.dart';
 import 'package:responsi_124220018/services/api_helper.dart';
-import 'package:responsi_124220018/services/auth_service.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class ListPage extends StatefulWidget {
+  final String category;
+  const ListPage({super.key, required this.category});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<ListPage> createState() => _ListPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ListPageState extends State<ListPage> {
   // Future<List<dynamic>> fetchData() async {
 
   // }
@@ -28,7 +27,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Expanded(
                 child: FutureBuilder<List<dynamic>>(
-                  future: ApiHelper.getCategories(),
+                  future: ApiHelper.getMeals(widget.category),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
@@ -47,14 +46,13 @@ class _HomePageState extends State<HomePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => ListPage(
-                                            category: snapshot.data![index]
-                                                ['strCategory'])));
+                                        builder: (context) => DetailPage(
+                                            id: snapshot.data![index]
+                                                ['idMeal'])));
                               },
                               child: Card(
                                 child: ListTile(
-                                  title: Text(
-                                      snapshot.data![index]['strCategory']),
+                                  title: Text(snapshot.data![index]['strMeal']),
                                 ),
                               ),
                             );
@@ -63,15 +61,6 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
               ),
-              MaterialButton(
-                onPressed: () {
-                  AuthService().logout;
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return LoginPage();
-                  }));
-                },
-                child: Text("Logout"),
-              )
             ],
           ),
         ));
